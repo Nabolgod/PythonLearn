@@ -1,0 +1,19 @@
+# .gitignore
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+*.egg-info/
+.DS_Store
+.idea/
+.vscode/
+
+#Всегда прятать env в gitignore, это аксиома
+.env
+
+# Zapret files
+*.bat
+tore*
