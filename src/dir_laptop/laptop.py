@@ -1,8 +1,8 @@
 from src.dir_laptop.laptopdes import LaptopDescriptor
+from src.dir_base.item import ItemShop
 
-
-class Laptop:
-    __category: str = "technique"
+class Laptop(ItemShop):
+    __category: str = "Technique"
     __item_name: str = "Laptop"
     __instance_count: int = 0
 
@@ -23,7 +23,7 @@ class Laptop:
             amount_video_memory: int = None,
             price: int = None,
     ):
-        self.model = self.__assign_model()
+        self.__model = self.__assign_model()
         self.proc_frequency = proc_frequency
         self.number_of_cores = number_of_cores
         self.amount_ram = amount_ram
