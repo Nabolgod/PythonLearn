@@ -1,6 +1,7 @@
 from src.dir_laptop.laptopdes import LaptopDescriptor
 from src.dir_base.item import ItemShop
 
+
 class Laptop(ItemShop):
     __category: str = "Technique"
     __item_name: str = "Laptop"

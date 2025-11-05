@@ -1,5 +1,6 @@
 from src.dir_base.item import ItemShop
 
+
 class Shop:
     def __init__(self):
         self.storage = {}
@@ -32,5 +33,3 @@ class Shop:
                 return item
         else:
             print("Такого товара нет")
-
-
