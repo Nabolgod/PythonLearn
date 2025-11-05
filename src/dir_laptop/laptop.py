@@ -4,6 +4,7 @@ from src.dir_laptop.laptopdes import LaptopDescriptor
 class Laptop:
     __category: str = "technique"
     __item_name: str = "Laptop"
+    __filename: str = "laptop"
     __instance_count: int = 0
 
     # Свойства полей
@@ -51,3 +52,7 @@ class Laptop:
     @property
     def item_name(self) -> str:
         return self.__item_name
+
+    @property
+    def filename(self, extension=None) -> str:
+        return f"{self.__filename}.{extension}"
