@@ -15,7 +15,7 @@ def generate_random_power_two(start, end):
 
 class LaptopDescriptor:
     def __set_name__(self, owner, name):
-        self.name = f"__{owner.__name__}_{name}"
+        self.name = f"{name}"
 
     def __init__(self, lower_limit=1, upper_limit=10, power_of_two=False):
         self.lower_limit = lower_limit

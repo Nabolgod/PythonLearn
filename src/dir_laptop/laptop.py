@@ -1,11 +1,8 @@
 from src.dir_laptop.laptopdes import LaptopDescriptor
-from src.dir_base.item import ItemShop
+from src.dir_base.item import ItemsShop
 
 
-class Laptop(ItemShop):
-    __category: str = "Technique"
-    __item_name: str = "Laptop"
-    __filename: str = "laptop"
+class Laptop(ItemsShop):
     __instance_count: int = 0
 
     # Свойства полей
@@ -37,9 +34,6 @@ class Laptop(ItemShop):
         attrs = ", ".join(f"{k}={v!r}" for k, v in self.__dict__.items())
         return f"Laptop({attrs})"
 
-    def __str__(self) -> str:
-        return f"Model_{self.model}"
-
     @classmethod
     def __assign_model(cls) -> int:
         """Метод для создания номера модели ноутбука"""
@@ -47,13 +41,20 @@ class Laptop(ItemShop):
         return cls.__instance_count
 
     @property
-    def category(self) -> str:
-        return self.__category
+    def characteristics(self):
+        return list(self.__dict__.values())
 
     @property
-    def item_name(self) -> str:
-        return self.__item_name
+    def model(self):
+        return self.__model
 
-    @property
-    def filename(self, extension=None) -> str:
-        return f"{self.__filename}.{extension}"
+    def to_dict(self):
+        return {
+            'model': self.model,
+            'proc_frequency': self.proc_frequency,
+            'number_of_cores': self.number_of_cores,
+            'amount_ram': self.amount_ram,
+            'amount_external_memory': self.amount_external_memory,
+            'amount_video_memory': self.amount_video_memory,
+            'price': self.price
+        }
