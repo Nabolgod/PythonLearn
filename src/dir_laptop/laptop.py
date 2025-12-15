@@ -4,6 +4,16 @@ from src.dir_base.item import ItemsShop
 
 class Laptop(ItemsShop):
     __instance_count: int = 0
+    __fieldnames = [
+        "id",
+        "model",
+        "proc_frequency",
+        "number_of_cores",
+        "amount_ram",
+        "amount_external_memory",
+        "amount_video_memory",
+        "price",
+    ]
 
     # Свойства полей
     proc_frequency = LaptopDescriptor(1, 5)
@@ -22,7 +32,8 @@ class Laptop(ItemsShop):
             amount_video_memory: int = None,
             price: int = None,
     ):
-        self.__model = self.__assign_model()
+        self.__id = self.__assign_id()
+        self.__model = f"LABTOP_{self.id}"
         self.proc_frequency = proc_frequency
         self.number_of_cores = number_of_cores
         self.amount_ram = amount_ram
@@ -35,26 +46,39 @@ class Laptop(ItemsShop):
         return f"Laptop({attrs})"
 
     @classmethod
-    def __assign_model(cls) -> int:
+    def __assign_id(cls) -> int:
         """Метод для создания номера модели ноутбука"""
         cls.__instance_count += 1
         return cls.__instance_count
 
     @property
-    def characteristics(self):
-        return list(self.__dict__.values())
+    def characteristics(self) -> dict:
+        dict_info = {
+            "id": self.id,
+            "model": self.model,
+            "proc_frequency": self.proc_frequency,
+            "number_of_cores": self.number_of_cores,
+            "amount_ram": self.amount_ram,
+            "amount_external_memory": self.amount_external_memory,
+            "amount_video_memory": self.amount_video_memory,
+            "price": self.price,
+        }
+        return dict_info
+
+    @property
+    def id(self):
+        return self.__id
 
     @property
     def model(self):
         return self.__model
+    
+    @property 
+    def fieldnames(self):
+        return self.__fieldnames
 
-    def to_dict(self):
-        return {
-            'model': self.model,
-            'proc_frequency': self.proc_frequency,
-            'number_of_cores': self.number_of_cores,
-            'amount_ram': self.amount_ram,
-            'amount_external_memory': self.amount_external_memory,
-            'amount_video_memory': self.amount_video_memory,
-            'price': self.price
-        }
+    @property
+    def size_formated(self):
+        return {key: max(len(key), len(str(value))) for key, value in self.characteristics.items()}
+
+example = Laptop()
