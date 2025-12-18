@@ -15,7 +15,8 @@ def generate_random_power_two(start, end):
 
 class LaptopDescriptor:
     def __set_name__(self, owner, name):
-        self.name = f"{name}"
+        self.name_property = name
+        self.name = f"_{owner.__name__}__{name}"
 
     def __init__(self, lower_limit=1, upper_limit=10, power_of_two=False):
         self.lower_limit = lower_limit
@@ -39,4 +40,10 @@ class LaptopDescriptor:
             )
             instance.__dict__[self.name] = value
         else:
+            if isinstance(value, str):
+                try:
+                    value = int(value)
+                except ValueError:
+                    raise ValueError(f"Поле {self.name_property} должно быть целочисленным!")
+
             instance.__dict__[self.name] = value

@@ -1,10 +1,9 @@
-from src.dir_laptop.laptopdes import LaptopDescriptor
-from src.dir_base.item import ItemsShop
+from src.items.labtop.laptopdes import LaptopDescriptor
+from src.items.item import Item
 
 
-class Laptop(ItemsShop):
-    __instance_count: int = 0
-    __fieldnames = [
+class Laptop(Item):
+    fieldnames = [
         "id",
         "model",
         "proc_frequency",
@@ -25,6 +24,7 @@ class Laptop(ItemsShop):
 
     def __init__(
             self,
+            id_obj: int,
             proc_frequency: int = None,
             number_of_cores: int = None,
             amount_ram: int = None,
@@ -32,7 +32,7 @@ class Laptop(ItemsShop):
             amount_video_memory: int = None,
             price: int = None,
     ):
-        self.__id = self.__assign_id()
+        super().__init__(id_obj)
         self.__model = f"LABTOP_{self.id}"
         self.proc_frequency = proc_frequency
         self.number_of_cores = number_of_cores
@@ -45,40 +45,35 @@ class Laptop(ItemsShop):
         attrs = ", ".join(f"{k}={v!r}" for k, v in self.__dict__.items())
         return f"Laptop({attrs})"
 
-    @classmethod
-    def __assign_id(cls) -> int:
-        """Метод для создания номера модели ноутбука"""
-        cls.__instance_count += 1
-        return cls.__instance_count
-
     @property
-    def characteristics(self) -> dict:
-        dict_info = {
-            "id": self.id,
-            "model": self.model,
-            "proc_frequency": self.proc_frequency,
-            "number_of_cores": self.number_of_cores,
-            "amount_ram": self.amount_ram,
-            "amount_external_memory": self.amount_external_memory,
-            "amount_video_memory": self.amount_video_memory,
-            "price": self.price,
-        }
-        return dict_info
-
-    @property
-    def id(self):
-        return self.__id
+    def records(self):
+        return (
+            self.id,
+            self.model,
+            self.proc_frequency,
+            self.number_of_cores,
+            self.amount_ram,
+            self.amount_external_memory,
+            self.amount_video_memory,
+            self.price,
+        )
 
     @property
     def model(self):
         return self.__model
-    
-    @property 
-    def fieldnames(self):
-        return self.__fieldnames
 
-    @property
-    def size_formated(self):
-        return {key: max(len(key), len(str(value))) for key, value in self.characteristics.items()}
+    @staticmethod
+    def create_obj(id_obj: int, random: bool = False):
+        if random:
+            return Laptop(id_obj)
 
-example = Laptop()
+        characteristics = {}
+        for field in Laptop.fieldnames:
+            if field in ("id", "model"):
+                continue
+            value = input(f"Введите значние для {field}: ")
+            characteristics[field] = value
+
+        obj = Laptop(id_obj, **characteristics)
+        return obj
+
