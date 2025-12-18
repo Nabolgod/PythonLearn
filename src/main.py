@@ -7,6 +7,5 @@ from src.interface import Interface
 from src.repositories.laptop import LaptopRepository
 
 if __name__ == "__main__":
-    obj = LaptopRepository().add()
-    print(obj)
-
+    interface = Interface(LaptopRepository())
+    interface.start()

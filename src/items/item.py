@@ -8,14 +8,8 @@ class Item(ABC):
         self.__id = id_obj
 
     def __repr__(self) -> str:
-        attrs = ", ".join(f"{k}={v!r}" for k, v in self.characteristics)
+        attrs = ", ".join(f"{k}={v!r}" for k, v in self.characteristics.items())
         return f"Laptop({attrs})"
-
-    def __str__(self) -> str:
-        record = ""
-        for key, size in self.size_formatted.items():
-            record += str(self.characteristics[key]).ljust(size)
-        return record
 
     @property
     def characteristics(self) -> dict:
@@ -30,11 +24,12 @@ class Item(ABC):
     def records(self):
         pass
 
-    @property
-    def size_formatted(self):
-        return {key: max(len(key), len(str(value))) for key, value in self.characteristics.items()}
-
     @staticmethod
     @abstractmethod
     def create_obj(id_obj: int, random: bool = False):
+        pass
+
+    @staticmethod
+    @abstractmethod
+    def convert_to_object(characteristics: dict):
         pass

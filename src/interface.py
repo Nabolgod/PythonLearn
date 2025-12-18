@@ -1,4 +1,6 @@
 class Interface:
+    def __init__(self, repository):
+        self.repository = repository
 
     def additional_functionality(self):
         while True:
@@ -27,42 +29,61 @@ class Interface:
                 case 6:
                     break
 
+    def choice_id(self):
+        id_obj = int(input("Выберите ID ноутбука: "))
+
+        while id_obj not in map(lambda obj: obj.id, self.repository.read()):
+            id_obj = int(input("Такого ID не существует, попробуйте ещё раз: "))
+        return id_obj
+
     def start(self):
         while True:
             print(
                 "1. Чтение данных из файла",
-                "2. Запись данных в файл",
-                "3. Поиск записи по модели ноутбука",
-                "4. Измененение поля записи",
-                "5. Удаление записи по модели ноутбука",
-                "6. Добавление записи в список со случайными данными",
-                "7. Добавление записи в список с ручным вводом данных",
-                "8. Показать содерживое списка",
-                "9. Дополнительные действия",
-                "10. Выйти из интерфейса",
+                "2. Поиск записи по ID ноутбука",
+                "3. Измененение поля записи по ID ноутбука",
+                "4. Удаление записи по ID ноутбука",
+                "5. Добавление записи в список со случайными данными",
+                "6. Добавление записи в список с ручным вводом данных",
+                "7. Показать содерживое списка",
+                "8. Дополнительные действия",
+                "9. Выйти из интерфейса",
                 sep="\n",
             )
 
             choice: int = int(input("Выберите действие: "))
             match choice:
                 case 1:
-                    file_contents = self.reading_file()
-                    self.print_information(file_contents)
+                    print(*self.repository.read(), sep="\n")
                 case 2:
-                    self.writing_file()
+                    obj = self.repository.search(self.choice_id())
+                    if obj:
+                        print(obj)
+                    else:
+                        print("Такого ноутбука нет")
                 case 3:
-                    self.search_for_an_entry()
+                    fieldnames = self.repository.instance.fieldnames[2:]
+                    id_obj = self.choice_id()
+
+                    for ind, attr in enumerate(fieldnames, start=1):
+                        print(f"{ind}. {attr}")
+                    choice_update = int(input("Выберите значение для изменения: "))
+                    while not 1 <= choice_update <= 6:
+                        choice_update = int(input("Выберите значение для изменения: "))
+
+                    field = fieldnames[choice_update - 1]
+                    new_value = int(input(f"Введите новое значение для поля {field}: "))
+                    self.repository.update(id_obj, field, new_value)
                 case 4:
-                    self.editing_a_post()
+                    self.repository.delete(self.choice_id())
                 case 5:
-                    self.deleting_an_entry()
+                    self.repository.add(True)
                 case 6:
-                    self.adding_one_entry_random()
+                    self.repository.add()
                 case 7:
-                    self.adding_one_entry_hands()
+                    self.repository.info()
                 case 8:
-                    self.print_information()
-                case 9:
                     self.additional_functionality()
-                case 10:
+                    pass
+                case 9:
                     break

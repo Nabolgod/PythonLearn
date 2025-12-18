@@ -41,10 +41,6 @@ class Laptop(Item):
         self.amount_video_memory = amount_video_memory
         self.price = price
 
-    def __repr__(self) -> str:
-        attrs = ", ".join(f"{k}={v!r}" for k, v in self.__dict__.items())
-        return f"Laptop({attrs})"
-
     @property
     def records(self):
         return (
@@ -62,6 +58,10 @@ class Laptop(Item):
     def model(self):
         return self.__model
 
+    @model.setter
+    def model(self, value):
+        self.__model = value
+
     @staticmethod
     def create_obj(id_obj: int, random: bool = False):
         if random:
@@ -77,3 +77,19 @@ class Laptop(Item):
         obj = Laptop(id_obj, **characteristics)
         return obj
 
+    @staticmethod
+    def convert_to_object(characteristics: dict):
+        laptop_id = int(characteristics.get("id", 0))
+
+        laptop_data = {
+            'proc_frequency': int(characteristics.get('proc_frequency', "None")),
+            'number_of_cores': int(characteristics.get('number_of_cores', "None")),
+            'amount_ram': int(characteristics.get('amount_ram', "None")),
+            'amount_external_memory': int(characteristics.get('amount_external_memory', "None")),
+            'amount_video_memory': int(characteristics.get('amount_video_memory', "None")),
+            'price': int(characteristics.get('price', "None"))
+        }
+        laptop = Laptop(laptop_id, **laptop_data)
+        laptop.model = characteristics.get("model", "None")
+
+        return laptop

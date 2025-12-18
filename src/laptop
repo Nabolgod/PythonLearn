@@ -1,9 +1,3 @@
 id,model,proc_frequency,number_of_cores,amount_ram,amount_external_memory,amount_video_memory,price
-1,LABTOP_1,100,100,100,100,100,100
-2,LABTOP_2,2,2,2,2,2,2
-3,LABTOP_3,10,10,10,10,10,10
-4,LABTOP_4,6,6,6,6,6,6
-5,LABTOP_5,6,4,3,24,5,34
-6,LABTOP_6,1000,1000,1000,1000,1000,1000
-7,LABTOP_7,3,4,2,1,4,5
-8,LABTOP_8,100,100,100,100,100,100
+4,LABTOP_4,10,1,32,9,8,5500
+5,LABTOP_5,4,2,8,10,8,4218
