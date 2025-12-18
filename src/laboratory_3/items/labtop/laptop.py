@@ -1,5 +1,5 @@
-from src.items.labtop.laptopdes import LaptopDescriptor
-from src.items.item import Item
+from src.laboratory_3.items.labtop.laptopdes import LaptopDescriptor
+from src.laboratory_3.items.item import Item
 
 
 class Laptop(Item):
