@@ -1,16 +1,4 @@
-import random
-import math
-
-
-def generate_random_number(start, end):
-    return random.randint(start, end)
-
-
-def generate_random_power_two(start, end):
-    min_power = math.ceil(math.log2(start))
-    max_power = math.floor(math.log2(end))
-
-    return 2 ** generate_random_number(min_power, max_power)
+from src.utils import generate_random_number, generate_random_power_two
 
 
 class LaptopDescriptor:
