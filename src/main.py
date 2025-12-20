@@ -1,17 +1,19 @@
 import sys
 from pathlib import Path
 
+from src.laboratory_6.stack import Stack
+
 sys.path.append(str(Path(__file__).parent.parent))
 
 from src.laboratory_4.sorting import Sorting
-from src.utils import generate_array_random, generate_random_number, search_test
+from src.utils import generate_array_random, search_test
 from src.laboratory_3.interface import Interface
-from src.laboratory_3.repositories.laptop import LaptopRepository
+from src.repositories.laptop_list import LaptopRepositoryList
 from src.laboratory_5.search import Search
 
 
 def start_laboratory_3():
-    interface = Interface(LaptopRepository())
+    interface = Interface(LaptopRepositoryList())
     interface.start()
 
 
@@ -50,6 +52,10 @@ def start_laboratory_5():
     print("Время работы сортировки с бинарным поиском: ", sorted_time + binary_time)
     print("Время работы сортировки с интерполяционным поиском: ", sorted_time + interp_time)
     print("Время работы сортировки с поиском прыжками: ", sorted_time + jump_time)
+
+
+def start_laboratory_6():
+    storage = Stack()
 
 
 if __name__ == "__main__":

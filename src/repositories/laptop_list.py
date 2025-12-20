@@ -1,32 +1,12 @@
 from src.laboratory_3.items.item import Item
-from abc import ABC
+from src.repositories.base import BaseRepository
+from src.laboratory_3.items.labtop.laptop import Laptop
 import csv
-from pathlib import Path
 
 
-class BaseRepository(ABC):
-    filename: str | None = None
-    instance: Item | None = None
-
-    def __init__(self):
-        if self.filename is None:
-            raise ValueError("filename должен быть задан в дочернем классе")
-        self.file_path = Path(self.filename)
-
-        # Создаем файл если его нет
-        if not self.file_path.exists():
-            self._create_empty_file()
-
-    def _create_empty_file(self):
-        """Создает пустой файл с заголовком"""
-        with open(self.file_path, "w", encoding="utf-8", newline='') as file:
-            writer = csv.DictWriter(file, fieldnames=self.instance.fieldnames)
-            writer.writeheader()
-
-
-    def is_empty(self) -> bool:
-        """Проверка на пустоту файла (без загрузки всех объектов)"""
-        return bool(self.read())
+class LaptopRepositoryList(BaseRepository):
+    filename = "laptop.csv"
+    instance = Laptop
 
     def read(self) -> list:  # Убрать параметр force_refresh
         """Чтение данных из csv файла в список объектов"""
@@ -44,31 +24,14 @@ class BaseRepository(ABC):
 
         return result
 
-    def write(self, data: list):
-        """Запись данных в csv файл из список объектов"""
+    def write(self, data):
+        """Запись данных в csv файл из списка объектов"""
         with open(self.file_path, "w", encoding="utf-8", newline='') as file:
             writer = csv.DictWriter(file, fieldnames=self.instance.fieldnames)
             writer.writeheader()
 
             for item in data:
                 writer.writerow(item.characteristics)
-
-    def add(self, random: bool = False) -> Item:
-        """Добавление объекта в csv файл с пользовательскими или случайными данными"""
-        next_id = self.get_next_id_generator()
-        obj = self.instance.create_obj(next_id, random)
-
-        file_exists = self.file_path.exists() and self.file_path.stat().st_size > 0
-
-        with open(self.file_path, 'a', newline='', encoding='utf-8') as file:
-            writer = csv.DictWriter(file, fieldnames=self.instance.fieldnames)
-
-            if not file_exists:
-                writer.writeheader()
-
-            writer.writerow(obj.characteristics)
-
-        return obj
 
     def search(self, id_obj: int) -> Item | None:
         """Поиск объекта в csv файле по id (оптимизированный)"""
@@ -78,17 +41,15 @@ class BaseRepository(ABC):
                 return obj
         return None
 
-    def delete(self, id: int) -> bool:
+    def delete(self, id_obj: int) -> bool:
         """Удаление объекта в csv файле по id"""
         items = self.read()
 
-        # Используем фильтрацию без лишних итераций
-        original_count = len(items)
         filtered_items = []
         found = False
 
         for item in items:
-            if item.id == id:
+            if item.id == id_obj:
                 found = True
             else:
                 filtered_items.append(item)
@@ -176,3 +137,20 @@ class BaseRepository(ABC):
     def get_all_ids(self) -> list[int]:
         """Получение списка всех ID (оптимизировано)"""
         return [item.id for item in self.read() if hasattr(item, 'id') and item.id is not None]
+
+    def add(self, random: bool = False) -> Item:
+        """Добавление объекта в csv файл с пользовательскими или случайными данными"""
+        next_id = self.get_next_id_generator()
+        obj = self.instance.create_obj(next_id, random)
+
+        file_exists = self.file_path.exists() and self.file_path.stat().st_size > 0
+
+        with open(self.file_path, 'a', newline='', encoding='utf-8') as file:
+            writer = csv.DictWriter(file, fieldnames=self.instance.fieldnames)
+
+            if not file_exists:
+                writer.writeheader()
+
+            writer.writerow(obj.characteristics)
+
+        return obj
