@@ -28,15 +28,9 @@ class BaseRepository(ABC):
         return bool(self.read())
 
     @abstractmethod
-    def read(self):
+    def read(self, *args, **kwargs):
         pass
 
     @abstractmethod
     def write(self, data):
         pass
-
-    @abstractmethod
-    def add(self, random: bool = False):
-        pass
-
-

@@ -41,6 +41,9 @@ class Laptop(Item):
         self.amount_video_memory = amount_video_memory
         self.price = price
 
+    def __str__(self):
+        return f"{self.model}"
+
     @property
     def records(self):
         return (

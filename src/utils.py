@@ -27,4 +27,3 @@ def search_test(search_obj, search_method='linear_search', size=100_000, start=-
         total_time += time_taken
 
     return total_time
-

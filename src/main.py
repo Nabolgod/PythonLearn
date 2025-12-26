@@ -1,7 +1,10 @@
 import sys
 from pathlib import Path
 
+from src.laboratory_6.interface import InterfaceStack
 from src.laboratory_6.stack import Stack
+from src.laboratory_7.interface import InterfaceCircularList
+from src.repositories.laptop_stack import LaptopRepositoryStack
 
 sys.path.append(str(Path(__file__).parent.parent))
 
@@ -55,8 +58,14 @@ def start_laboratory_5():
 
 
 def start_laboratory_6():
-    storage = Stack()
+    interface = InterfaceStack()
+    interface.menu()
+
+
+def start_laboratory_7():
+    interface = InterfaceCircularList()
+    interface.menu()
 
 
 if __name__ == "__main__":
-    start_laboratory_4()
+    start_laboratory_7()
